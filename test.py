@@ -19,18 +19,14 @@ field = [{
     "format": "%m/%d/%Y"
 }]
 
-from login import login, find_token, multiple_request,headers
-from request_parse import RequestParser
+from mockdata import MockData
 
 user = {
-    "email": "user@itsexpo.com",
-    "password": "ITSExpo@2023"
+    "email": "<email>",
+    "password": "<password>"
 }
 
-login_res = login('http://127.0.0.1:8000/api/login_user', user)
-bearer_token = find_token(login_res)
-headers["Authorization"] = f"Bearer {bearer_token}"
-req = RequestParser(field, "514a2b80")
-res = req.generate_data(count=10)
-multiple_request(res, '', headers)
+mock = MockData(field, "<mockaroo api key>", "<api service url to seed>", "post")
+mock.login('http://127.0.0.1:8000/api/login_user', user)
+mock.generate_request(1000)
 
