@@ -1,5 +1,6 @@
 import requests
 import json
+import ast
 
 class MockData:
     def __init__(self, fields, key: str, url:str, method: str):
@@ -51,3 +52,21 @@ class MockData:
 
     def generate_request(self, count=100):
         self.send_request(self.generate_data(count))
+
+    def parse_string(string):
+        try:
+            return ast.literal_eval(string)
+        except (ValueError, SyntaxError):
+            return string
+
+    def parse_field(field):
+        decode_field = []
+        temp = {}
+        for a, b in enumerate(field.items()):
+            temp = {}
+            temp["name"] = b[0]
+            for i in b[1].split("|"):
+                x = i.split(":")
+                temp[x[0]] = MockData.parse_string(x[1])
+            decode_field.append(temp)
+        return decode_field
